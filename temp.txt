@@ -1,0 +1,244 @@
+const express=require("express");
+const bodyParser=require("body-parser");
+const https=require("https");
+const mongoose=require("mongoose");
+const nodemailer = require('nodemailer');
+const cron = require('node-cron');
+
+
+const app=express();
+mongoose.connect("mongodb://127.0.0.1:27017/weathersDB",{UseNewUrlParser:true});
+const weatherschema=new mongoose.Schema(
+    {
+        name:String,
+        email: String,
+        location: String
+    }
+);
+const weather = mongoose.model("weather",weatherschema);
+
+
+app.use(express.static("Subscribe"));
+app.use(express.static("Subscribe/Public"));
+app.use(express.static("Subscribe/Public/Images"));
+
+app.use(express.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.get("/",function(req,res)
+{
+    res.sendFile(__dirname+"/index.html");
+})
+app.get("/Subscribe/subscribe.html",function(req,res)
+{
+    res.sendFile(__dirname+"/Subscribe/subscribe.html");
+})
+
+
+
+const transporter = nodemailer.createTransport({
+    service: 'Gmail', // e.g., 'Gmail', 'Outlook'
+    auth: {
+      user: 'wiseweather3@gmail.com',
+      pass: 'Weather.wise@123',
+    },
+});
+
+
+cron.schedule('40 7 * * *', () => {
+    // Set up email data
+    weather.find(function(err,weathers){
+
+    if(err)
+    {
+        console.log(err);
+    }
+    else
+    {
+    weathers.forEach(function(weather){
+        const N=weather.name;
+        const E=weather.email;
+        const L=weather.location;
+        const ur=`https://api.weatherapi.com/v1/forecast.json?q=${L}&key=8ee881e28153477693c122027232706`;
+
+        https.get(ur,function(resp)
+        {
+        resp.on("data",function(data)
+        {
+            const wData=JSON.parse(data);
+            const temp0=wData.forecast.forecastday[0].hour[0].temp_c;
+            const temp1=wData.forecast.forecastday[0].hour[1].temp_c;
+            const temp2=wData.forecast.forecastday[0].hour[2].temp_c;
+            const temp3=wData.forecast.forecastday[0].hour[3].temp_c;
+            const temp4=wData.forecast.forecastday[0].hour[4].temp_c;
+            const temp5=wData.forecast.forecastday[0].hour[5].temp_c;
+            const temp6=wData.forecast.forecastday[0].hour[6].temp_c;
+            const temp7=wData.forecast.forecastday[0].hour[7].temp_c;
+            const temp8=wData.forecast.forecastday[0].hour[8].temp_c;
+            const temp9=wData.forecast.forecastday[0].hour[9].temp_c;
+            const temp10=wData.forecast.forecastday[0].hour[10].temp_c;
+            const temp11=wData.forecast.forecastday[0].hour[11].temp_c;
+            const temp12=wData.forecast.forecastday[0].hour[12].temp_c;
+            const temp13=wData.forecast.forecastday[0].hour[13].temp_c;
+            const temp14=wData.forecast.forecastday[0].hour[14].temp_c;
+            const temp15=wData.forecast.forecastday[0].hour[15].temp_c;
+            const temp16=wData.forecast.forecastday[0].hour[16].temp_c;
+            const temp17=wData.forecast.forecastday[0].hour[17].temp_c;
+            const temp18=wData.forecast.forecastday[0].hour[18].temp_c;
+            const temp19=wData.forecast.forecastday[0].hour[19].temp_c;
+            const temp20=wData.forecast.forecastday[0].hour[20].temp_c;
+            const temp21=wData.forecast.forecastday[0].hour[21].temp_c;
+            const temp22=wData.forecast.forecastday[0].hour[22].temp_c;
+            const temp23=wData.forecast.forecastday[0].hour[23].temp_c;
+
+
+            const feels0=wData.forecast.forecastday[0].hour[0].condition.text;
+            const feels1=wData.forecast.forecastday[0].hour[1].condition.text;
+            const feels2=wData.forecast.forecastday[0].hour[2].condition.text;
+            const feels3=wData.forecast.forecastday[0].hour[3].condition.text;
+            const feels4=wData.forecast.forecastday[0].hour[4].condition.text;
+            const feels5=wData.forecast.forecastday[0].hour[5].condition.text;
+            const feels6=wData.forecast.forecastday[0].hour[6].condition.text;
+            const feels7=wData.forecast.forecastday[0].hour[7].condition.text;
+            const feels8=wData.forecast.forecastday[0].hour[8].condition.text;
+            const feels9=wData.forecast.forecastday[0].hour[9].condition.text;
+            const feels10=wData.forecast.forecastday[0].hour[10].condition.text;
+            const feels11=wData.forecast.forecastday[0].hour[11].condition.text;
+            const feels12=wData.forecast.forecastday[0].hour[12].condition.text;
+            const feels13=wData.forecast.forecastday[0].hour[13].condition.text;
+            const feels14=wData.forecast.forecastday[0].hour[14].condition.text;
+            const feels15=wData.forecast.forecastday[0].hour[15].condition.text;
+            const feels16=wData.forecast.forecastday[0].hour[16].condition.text;
+            const feels17=wData.forecast.forecastday[0].hour[17].condition.text;
+            const feels18=wData.forecast.forecastday[0].hour[18].condition.text;
+            const feels19=wData.forecast.forecastday[0].hour[19].condition.text;
+            const feels20=wData.forecast.forecastday[0].hour[20].condition.text;
+            const feels21=wData.forecast.forecastday[0].hour[21].condition.text;
+            const feels22=wData.forecast.forecastday[0].hour[22].condition.text;
+            const feels23=wData.forecast.forecastday[0].hour[23].condition.text;
+
+
+
+            console.log(wData);
+
+            const mailOptions = {
+                from: 'wiseweather3@gmail.com',
+                to:E,
+                subject: 'Weather Wise Forecast ',
+                text: 'Bringing You Todays forecast \n'+
+                ' At 0:00 temp is '+temp0 +' it feels like '+feels0 +'\n'+
+                ' At 1:00 temp is '+temp1 +' it feels like '+feels1 +'\n'+
+                ' At 2:00 temp is '+temp2 +' it feels like '+feels2 +'\n'+
+                ' At 3:00 temp is '+temp3 +' it feels like '+feels3 +'\n'+
+                ' At 4:00 temp is '+temp4 +' it feels like '+feels4 +'\n'+
+                ' At 5:00 temp is '+temp5 +' it feels like '+feels5 +'\n'+
+                ' At 6:00 temp is '+temp6 +' it feels like '+feels6 +'\n'+
+                ' At 7:00 temp is '+temp7 +' it feels like '+feels7 +'\n'+
+                ' At 8:00 temp is '+temp8 +' it feels like '+feels8 +'\n'+
+                ' At 9:00 temp is '+temp9 +' it feels like '+feels9 +'\n'+
+                ' At 10:00 temp is '+temp10 +' it feels like '+feels10 +'\n'+
+                ' At 11:00 temp is '+temp11 +' it feels like '+feels11 +'\n'+
+                ' At 12:00 temp is '+temp12 +' it feels like '+feels12 +'\n'+
+                ' At 13:00 temp is '+temp13 +' it feels like '+feels13 +'\n'+
+                ' At 14:00 temp is '+temp14 +' it feels like '+feels14 +'\n'+
+                ' At 15:00 temp is '+temp15 +' it feels like '+feels15 +'\n'+
+                ' At 16:00 temp is '+temp16 +' it feels like '+feels16 +'\n'+
+                ' At 17:00 temp is '+temp17 +' it feels like '+feels17 +'\n'+
+                ' At 18:00 temp is '+temp18 +' it feels like '+feels18 +'\n'+
+                ' At 19:00 temp is '+temp19 +' it feels like '+feels19 +'\n'+
+                ' At 20:00 temp is '+temp20 +' it feels like '+feels20 +'\n'+
+                ' At 21:00 temp is '+temp21 +' it feels like '+feels21 +'\n'+
+                ' At 22:00 temp is '+temp22 +' it feels like '+feels22 +'\n'+
+                ' At 23:00 temp is '+temp23 +' it feels like '+feels23 +'\n'
+
+            };
+            
+
+              // Send the email
+              transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                  console.log('Error sending email:', error);
+                } else {
+                  console.log('Email sent:', info.response);
+                }
+            });
+
+
+        })
+    })
+
+
+
+
+        
+    });
+    }
+    })
+});
+
+
+
+
+
+
+app.post("/subscribe", (req, res) => {
+    const place = req.body.place;
+    const nam = req.body.nam;
+    const emai = req.body.emai;
+    console.log(place);
+    console.log(nam);
+    console.log(emai);
+
+    const details= new weather({
+        name:nam,
+        email: emai,
+        location : place,
+    });
+    
+    details.save();
+
+    res.send("<h1>You have subscribed to Weather wise </h1>");
+
+});
+
+
+
+
+app.post("/", (req, res) => {
+    const location = req.body.location;
+    console.log("Location: " + location);
+    const url = `https://api.weatherapi.com/v1/current.json?q=${location}&key=8ee881e28153477693c122027232706`;
+    https.get(url,function(resp)
+    {
+        resp.on("data",function(data)
+        {
+            const weatherData=JSON.parse(data);
+            
+            const temp=weatherData.current.temp_c;
+            const condition=weatherData.current.condition.text;
+            const feels=weatherData.current.feelslike_c;
+            const humid=weatherData.current.humidity;
+            const clouds =weatherData.current.cloud;
+            console.log(temp);
+            res.write("<h1>The temperature in "+location+" is "+temp+ "C</h1>");
+            res.write("<h2>The current condition is "+condition+" </h2>");
+            res.write("<h2>The temperature in "+location+" feels like "+feels+" C</h2>");
+            res.write("<h2>The current humidity is "+humid+" </h2>");
+            res.write("<h2>The clouds are "+clouds+" </h2>");
+            res.send();
+            console.log(weatherData);
+        })
+    })
+});
+
+
+
+
+
+
+app.listen(3000);
+
+
+// API KEY :8ee881e28153477693c122027232706
+// d8WPbpS79JGGpkyt Password 
+//  LYyzDyNtNgn90zu1 Password   mongodb+srv://tarun20092002:<password>@cluster0ww.pfmjqze.mongodb.net/
