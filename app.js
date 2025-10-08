@@ -57,7 +57,7 @@ cron.schedule("53 18 * * *", async () => {
         console.log(weatherData);
       for (const weather of weatherData) {
         const { name, email, location } = weather;
-        const ur1 = https://api.weatherapi.com/v1/forecast.json?q=${location}&key=23f3019c79734c24a4a175322250210
+        const ur1 = https://api.weatherapi.com/v1/forecast.json?q=${location}&key=827cded53f444a9d903102400250810
   
         const response = await axios.get(ur1);
         const wData = response.data;
@@ -187,7 +187,7 @@ app.post("/subscribe", (req, res) => {
 app.post("/", async (req, res) => {
     const location = req.body.location;
     console.log("Location: " + location);
-    const url = https://api.weatherapi.com/v1/current.json?q=${location}&key=23f3019c79734c24a4a175322250210
+    const url = https://api.weatherapi.com/v1/current.json?q=${location}&key=827cded53f444a9d903102400250810
   
     try {
       const response = await axios.get(url);
