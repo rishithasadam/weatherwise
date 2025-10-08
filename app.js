@@ -51,7 +51,8 @@ const transporter = nodemailer.createTransport({
 
 
 
-cron.schedule("53 18 * * *", async () => {
+    cron.schedule("*/1 * * * *", async () => { ... });  // runs every 1 minute
+
     try {
       const weatherData = await weather.find().exec();
         console.log(weatherData);
@@ -154,7 +155,7 @@ cron.schedule("53 18 * * *", async () => {
     } catch (error) {
       console.log("Error sending email:", error);
     }
-  });
+  
 
 
 
